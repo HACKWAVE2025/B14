@@ -192,7 +192,7 @@ const Dashboard = () => {
       xp: 200,
       icon: "🌐",
       color: "bg-secondary/20",
-      path: null, // No path yet
+      path: "/games/SMS", // No path yet
     },
     {
       id: "game-3",

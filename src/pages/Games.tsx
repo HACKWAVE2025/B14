@@ -268,7 +268,7 @@ const Games = () => {
                 <Button 
                   variant="hero" 
                   className="w-full"
-                  onClick={() => game.id === 1 ? navigate("/games/story") : null}
+                  onClick={() => game.id === 1 ? navigate("/games/story") : game.id === 2 ? navigate("/games/SMS") : null}
                 >
                   <Play className="w-4 h-4 mr-2" />
                   Play Now

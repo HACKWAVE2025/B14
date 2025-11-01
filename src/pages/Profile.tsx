@@ -100,9 +100,9 @@ const Profile = () => {
 
   // Mock XP calculation based on currentLevel (Aligning with Dashboard logic for UX)
   const currentLevel = profile?.currentLevel || 1;
-  const xp = currentLevel * 8400;
-  const xpToNext = (currentLevel + 1) * 10000;
-  const percentage = (xp / xpToNext) * 100;
+  // const xp = currentLevel * 8400;
+  // const xpToNext = (currentLevel + 1) * 10000;
+  // const percentage = (xp / xpToNext) * 100;
 
   if (loading) {
     return (
@@ -185,14 +185,12 @@ const Profile = () => {
                   <span className="font-medium">
                     Level {profile.currentLevel}
                   </span>
-                  <span className="text-muted-foreground">
-                    {xp} / {xpToNext} XP
-                  </span>
+                  
                 </div>
-                <Progress value={percentage} className="h-3" />
+                {/* <Progress value={percentage} className="h-3" />
                 <p className="text-xs text-muted-foreground">
                   {xpToNext - xp} XP to level {profile.currentLevel + 1}
-                </p>
+                </p> */}
               </div>
             </div>
 

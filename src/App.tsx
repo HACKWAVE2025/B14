@@ -13,6 +13,7 @@ import News from "./pages/News";
 import StoryGame from "./pages/StoryGame";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SmishingGame from "./pages/SMS";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/games" element={<Games />} />
             <Route path="/games/story" element={<StoryGame />} />
+            <Route path="/games/SMS" element={<SmishingGame />} />
             <Route path="/news" element={<News />} />
           </Route>
 
