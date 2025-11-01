@@ -1,0 +1,117 @@
+/*
+ * NEW FILE: src/PixelLanding.css
+ */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  /* Apply the pixel font to our new landing page */
+  .font-pixel {
+    font-family: 'Press Start 2P', cursive;
+    /* Disable font smoothing for a crisp, pixelated text look */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Make images render with sharp pixels, not blur */
+    image-rendering: pixelated;
+  }
+}
+
+@layer utilities {
+  /* Animated CRT Scanline Background */
+  .scanline-bg {
+    @apply bg-[#2a0d45]; /* Deep Purple */
+    overflow: hidden;
+    position: relative;
+  }
+  .scanline-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(20, 0, 40, 0) 0%,
+      rgba(20, 0, 40, 0.4) 50%,
+      rgba(20, 0, 40, 0) 100%
+    );
+    background-size: 100% 4px;
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes scanline {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 -100vh;
+    }
+  }
+
+  /* 8-Bit UI Box Container */
+  .pixel-box {
+    @apply bg-[#1a0a2e] border-[4px];
+    border-top-color: #7e57c2;
+    border-left-color: #7e57c2;
+    border-bottom-color: #10061d;
+    border-right-color: #10061d;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  /* "Pressed-in" Inset Box */
+  .pixel-box-inset {
+    @apply bg-[#1a0a2e] border-[4px];
+    border-top-color: #10061d;
+    border-left-color: #10061d;
+    border-bottom-color: #7e57c2;
+    border-right-color: #7e57c2;
+  }
+
+  /* Main "Pressable" Button (Pink) */
+  .btn-pixel-main {
+    @apply font-pixel text-base text-white bg-[#f0f] rounded-none border-[4px] px-8 py-3 transition-all duration-100 ease-linear;
+    border-top-color: #ff79ff;
+    border-left-color: #ff79ff;
+    border-bottom-color: #a600a6;
+    border-right-color: #a600a6;
+    box-shadow: 4px 4px 0px #000;
+  }
+  .btn-pixel-main:hover {
+    @apply bg-[#ff33ff] -translate-x-0.5 -translate-y-0.5;
+    box-shadow: 6px 6px 0px #000;
+  }
+  .btn-pixel-main:active {
+    @apply bg-[#e600e6] translate-x-[2px] translate-y-[2px];
+    border-top-color: #a600a6;
+    border-left-color: #a600a6;
+    border-bottom-color: #ff79ff;
+    border-right-color: #ff79ff;
+    box-shadow: 0px 0px 0px #000;
+  }
+
+  /* Alternate "Pressable" Button (Cyan) */
+  .btn-pixel-alt {
+    @apply font-pixel text-sm text-black bg-[#0ff] rounded-none border-[4px] px-6 py-2 transition-all duration-100 ease-linear;
+    border-top-color: #7fffff;
+    border-left-color: #7fffff;
+    border-bottom-color: #00a6a6;
+    border-right-color: #00a6a6;
+    box-shadow: 4px 4px 0px #000;
+  }
+  .btn-pixel-alt:hover {
+    @apply bg-[#33ffff] -translate-x-0.5 -translate-y-0.5;
+    box-shadow: 6px 6px 0px #000;
+  }
+  .btn-pixel-alt:active {
+    @apply bg-[#00e6e6] translate-x-[2px] translate-y-[2px];
+    border-top-color: #00a6a6;
+    border-left-color: #00a6a6;
+    border-bottom-color: #7fffff;
+    border-right-color: #7fffff;
+    box-shadow: 0px 0px 0px #000;
+  }
+}
