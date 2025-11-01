@@ -125,7 +125,7 @@ const Dashboard = () => {
 
     // Only fetch leaderboard if we have user stats to find the rank for
     if (userStats?.username) {
-        fetchLeaderboard();
+      fetchLeaderboard();
     }
   }, [userStats?.username]); // Re-fetch only when the username loads
 
@@ -247,7 +247,6 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="container mx-auto px-6 py-8">
-        
         {/* Simplified Welcome */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">
@@ -261,7 +260,6 @@ const Dashboard = () => {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Main Content - 75% */}
           <div className="flex-1 space-y-6">
-            
             {/* Quick Play Games (MOVED TO TOP) */}
             <div className="card-glass p-6 rounded-xl">
               <div className="flex justify-between items-center mb-6">

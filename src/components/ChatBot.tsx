@@ -57,16 +57,13 @@ export const ChatBot = () => {
     const userMessage: Message = { role: "user", content: query };
     const loadingMessage: Message = { role: "bot", content: "..." };
 
-    // 1. Prepare UI for send
     setLoading(true);
     setInput("");
     setMessages((prev) => [...prev, userMessage, loadingMessage]);
 
-    // --- UPDATED PAYLOAD to match req.body.message ---
     const payload = { message: query };
 
     try {
-      // 2. API Call to backend /chat route
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: "POST",
         headers: {
@@ -79,24 +76,21 @@ export const ChatBot = () => {
       let botResponse: Message;
 
       if (!response.ok || !data.success) {
-        // Handle API/Server Error
         const errorContent =
           data.error || "Sorry, I couldn't connect to the AI service.";
         botResponse = {
           role: "bot",
-          content:` ⚠ **Error:** ${errorContent}`,
+          content: `⚠️ **Error:** ${errorContent}`,
         };
       } else {
-        // Success: Use AI's reply from data.reply
         const aiResponseText =
           data.reply ||
           "I received your message, but the AI response was empty. Try again?";
         botResponse = { role: "bot", content: aiResponseText };
       }
 
-      // 3. Update messages by replacing the loading indicator with the final response
       setMessages((prev) => {
-        const newMessages = prev.slice(0, -1); // Remove the last item ("...")
+        const newMessages = prev.slice(0, -1);
         return [...newMessages, botResponse];
       });
     } catch (error) {
@@ -104,9 +98,8 @@ export const ChatBot = () => {
       const botResponse: Message = {
         role: "bot",
         content:
-          "🚨 *Network Error*: Could not reach the FraudGuard server. Please ensure the backend is running.",
+          "🚨 **Network Error**: Could not reach the FraudGuard server. Please ensure the backend is running.",
       };
-      // Replace the loading message with the network error
       setMessages((prev) => {
         const newMessages = prev.slice(0, -1);
         return [...newMessages, botResponse];
@@ -118,36 +111,34 @@ export const ChatBot = () => {
 
   return (
     <>
-      {/* Chat Toggle Button */}
-      <Button
+      {/* Chat Toggle Button - Using pixel button style */}
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-glow z-50"
-        variant="hero"
-        size="icon"
+        className="btn-pixel-main fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-glow z-50 flex items-center justify-center"
       >
         {isOpen ? (
           <X className="w-6 h-6" />
         ) : (
           <MessageSquare className="w-6 h-6" />
         )}
-      </Button>
+      </button>
 
-      {/* Chat Window */}
+      {/* Chat Window - Changed card-glass to pixel-box */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-full max-w-lg h-[700px] card-glass rounded-2xl shadow-card flex flex-col z-50">
-          {/* Header */}
-          <div className="p-4 border-b border-border flex items-center gap-3 bg-gradient-primary rounded-t-2xl">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
-              <Shield className="w-5 h-5 text-white" />
+        <div className="fixed bottom-24 right-6 w-full max-w-lg h-[700px] pixel-box flex flex-col z-50">
+          {/* Header - Updated styling */}
+          <div className="p-4 border-b border-gray-600 flex items-center gap-3 bg-gray-900 rounded-t-lg">
+            <div className="w-10 h-10 bg-cyan-300/20 rounded-full flex items-center justify-center">
+              <Shield className="w-5 h-5 text-cyan-300" />
             </div>
             <div className="flex-1">
               <h3 className="font-bold text-white">FraudGuard AI Assistant</h3>
-              <p className="text-xs text-white/80">Fraud Detection Expert</p>
+              <p className="text-xs text-gray-400">Fraud Detection Expert</p>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900/90">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -155,11 +146,12 @@ export const ChatBot = () => {
                   msg.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
+                {/* Message Bubble styling update */}
                 <div
                   className={`max-w-[85%] p-3 rounded-lg ${
                     msg.role === "user"
-                      ? "bg-gradient-primary text-primary-foreground"
-                      : "bg-muted border border-border"
+                      ? "bg-pink-500 text-white"
+                      : "bg-gray-700 text-white border border-gray-600"
                   } ${msg.content === "..." ? "animate-pulse" : ""}`}
                 >
                   <p className="text-sm whitespace-pre-line">{msg.content}</p>
@@ -167,22 +159,24 @@ export const ChatBot = () => {
               </div>
             ))}
 
-            {/* Quick Actions (only show initially) */}
+            {/* Quick Actions */}
             {messages.length === 1 && (
               <div className="space-y-2">
-                <p className="text-xs text-muted-foreground text-center mb-3">
+                <p className="text-xs text-gray-400 text-center mb-3">
                   Quick Actions:
                 </p>
                 {quickActions.map((action, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSend(action.query)}
-                    className="w-full p-3 bg-muted/30 hover:bg-muted/50 rounded-lg text-left transition-colors border border-border/50 hover:border-primary/50"
+                    className="w-full p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-left transition-colors border border-gray-600"
                     disabled={loading}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{action.icon}</span>
-                      <span className="text-sm">{action.text}</span>
+                      <span className="text-sm text-cyan-300">
+                        {action.text}
+                      </span>
                     </div>
                   </button>
                 ))}
@@ -192,32 +186,31 @@ export const ChatBot = () => {
           </div>
 
           {/* Info Banner */}
-          <div className="px-4 py-2 bg-primary/10 border-t border-primary/20">
-            <div className="flex items-center gap-2 text-xs text-primary">
+          <div className="px-4 py-2 bg-gray-800 border-t border-gray-600">
+            <div className="flex items-center gap-2 text-xs text-cyan-300">
               <Lightbulb className="w-4 h-4" />
               <span>Ask me anything about fraud prevention!</span>
             </div>
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-border">
+          <div className="p-4 border-t border-gray-600 bg-gray-900 rounded-b-lg">
             <div className="flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ask about fraud prevention..."
-                className="flex-1"
+                className="flex-1 bg-gray-700 border-gray-600 text-white"
                 disabled={loading}
               />
-              <Button
+              <button
                 onClick={() => handleSend()}
-                size="icon"
-                variant="hero"
+                className="btn-pixel-main w-10 h-10 flex items-center justify-center"
                 disabled={loading}
               >
                 <Send className="w-4 h-4" />
-              </Button>
+              </button>
             </div>
           </div>
         </div>

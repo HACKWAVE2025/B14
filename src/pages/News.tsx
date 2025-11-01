@@ -1,3 +1,6 @@
+/*
+ * REFACTOR: Applied Pixel Game World theme from Landing.tsx.
+ */
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { ChatBot } from "@/components/ChatBot";
@@ -18,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatDistanceToNow } from "date-fns";
+import "@/PixelLanding.css"; // <-- Import the styles
 
 // Interface for the fetched news article structure
 interface NewsArticle {
@@ -60,7 +64,6 @@ const News = () => {
         return res.json();
       })
       .then((data: NewsArticle[]) => {
-        // Filter out articles missing essential data and set state
         setNewsArticles(data.filter((article) => article.title && article.url));
         setError(null);
       })
@@ -76,7 +79,7 @@ const News = () => {
       });
   }, []);
 
-  // Helper to categorize/tag an article based on content keywords
+  // Helper functions
   const categorizeArticle = (article: NewsArticle) => {
     const text = (
       article.title +
@@ -109,7 +112,6 @@ const News = () => {
     return "all";
   };
 
-  // Simple severity logic based on keywords
   const getArticleSeverity = (article: NewsArticle) => {
     const text = (
       article.title +
@@ -126,11 +128,10 @@ const News = () => {
     return "medium";
   };
 
-  // Helper function for consistent severity badge colors
   const getSeverityColor = (severity: string) => {
     return severity === "high"
-      ? "bg-destructive/20 text-destructive border-destructive/30"
-      : "bg-warning/20 text-warning border-warning/30";
+      ? "text-red-500 bg-red-900/50 border-red-500/50"
+      : "text-yellow-400 bg-yellow-900/50 border-yellow-400/50";
   };
 
   const filteredArticles = newsArticles.filter((article) => {
@@ -147,84 +148,82 @@ const News = () => {
   });
 
   return (
-    <div className="min-h-screen">
+    // Apply pixel theme root styles
+    <div className="min-h-screen font-pixel scanline-bg text-white">
       <Navbar />
 
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <AlertTriangle className="w-10 h-10 text-destructive" />
-            <h1 className="text-4xl font-bold">Scam News & Alerts</h1>
+            <AlertTriangle className="w-10 h-10 text-pink-500" />
+            <h1 className="text-4xl font-bold text-cyan-300">
+              System Alerts & News
+            </h1>
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-gray-400 text-lg">
             Stay updated with the latest fraud alerts and security threats
           </p>
         </div>
 
-        {/* Stats - Keeping the mock stats structure */}
+        {/* Stats - Changed card-glass to pixel-box-inset */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="card-glass p-6 rounded-xl">
+          <div className="pixel-box p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-destructive/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-destructive" />
+              <div className="pixel-box-inset w-12 h-12 flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-pink-500" />
               </div>
               <div>
-                <div className="text-2xl font-bold">+34%</div>
-                <div className="text-sm text-muted-foreground">
-                  Scams this month
-                </div>
+                <div className="text-2xl font-bold text-pink-500">+34%</div>
+                <div className="text-sm text-gray-400">Threat Activity</div>
               </div>
             </div>
           </div>
-          <div className="card-glass p-6 rounded-xl">
+          <div className="pixel-box p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-warning/20 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-warning" />
+              <div className="pixel-box-inset w-12 h-12 flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
-                <div className="text-2xl font-bold">12</div>
-                <div className="text-sm text-muted-foreground">
-                  Active threats
-                </div>
+                <div className="text-2xl font-bold text-yellow-400">12</div>
+                <div className="text-sm text-gray-400">Active Threats</div>
               </div>
             </div>
           </div>
-          <div className="card-glass p-6 rounded-xl">
+          <div className="pixel-box p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-primary" />
+              <div className="pixel-box-inset w-12 h-12 flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-cyan-300" />
               </div>
               <div>
-                <div className="text-2xl font-bold">Today</div>
-                <div className="text-sm text-muted-foreground">
-                  Last updated
-                </div>
+                <div className="text-2xl font-bold text-cyan-300">Today</div>
+                <div className="text-sm text-gray-400">Last updated</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="card-glass p-6 rounded-xl mb-8">
+        {/* Filters - Changed card-glass to pixel-box */}
+        <div className="pixel-box p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <Input
-                placeholder="Search news articles..."
+                placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-gray-800 text-white border-gray-600"
               />
             </div>
+            {/* Select styling adjustments (same as Dashboard.tsx) */}
             <Select
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
-              <SelectTrigger className="w-full md:w-64">
+              <SelectTrigger className="w-full md:w-64 bg-gray-800 text-white border-gray-600">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-gray-800 border-gray-600">
                 {categories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
                     {cat.name}
@@ -233,10 +232,10 @@ const News = () => {
               </SelectContent>
             </Select>
             <Select defaultValue="recent">
-              <SelectTrigger className="w-full md:w-48">
+              <SelectTrigger className="w-full md:w-48 bg-gray-800 text-white border-gray-600">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-gray-800 border-gray-600">
                 <SelectItem value="recent">Most Recent</SelectItem>
                 <SelectItem value="severity">Highest Severity</SelectItem>
                 <SelectItem value="popular">Most Read</SelectItem>
@@ -245,18 +244,18 @@ const News = () => {
           </div>
         </div>
 
-        {/* Loading and Error States */}
+        {/* Loading and Error States - Changed card-glass to pixel-box */}
         {loading && (
-          <p className="text-center text-muted-foreground mt-10">
-            Fetching the latest fraud news...
+          <p className="text-center text-gray-400 mt-10">
+            Fetching the latest fraud intelligence...
           </p>
         )}
 
         {error && !loading && (
-          <div className="text-center text-destructive p-8 card-glass rounded-xl mt-10">
+          <div className="text-center text-red-500 p-8 pixel-box mt-10">
             <AlertTriangle className="w-8 h-8 mx-auto mb-4" />
-            <h3 className="font-bold text-xl mb-2">Error</h3>
-            <p>{error}</p>
+            <h3 className="font-bold text-xl mb-2">ACCESS DENIED</h3>
+            <p className="text-gray-400">{error}</p>
           </div>
         )}
 
@@ -266,16 +265,14 @@ const News = () => {
             {filteredArticles.map((article, index) => {
               const category = categorizeArticle(article);
               const severity = getArticleSeverity(article);
-              // Simple calculation for read time
               const readTime =
                 Math.ceil((article.description?.length || 500) / 1000) * 2;
               const date = new Date(article.publishedAt);
               const timeAgo = formatDistanceToNow(date, { addSuffix: true });
 
-              // Fallback for missing image
               const imageUrl =
                 article.urlToImage ||
-                "https://via.placeholder.com/400x200?text=FraudGuard+News";
+                "https://via.placeholder.com/400x200?text=System+Log";
 
               return (
                 <a
@@ -283,17 +280,17 @@ const News = () => {
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="card-glass p-6 rounded-xl hover:scale-[1.01] transition-transform cursor-pointer group"
+                  // Changed card-glass to pixel-box
+                  className="pixel-box p-6 hover:translate-y-0 hover:shadow-none transition-all cursor-pointer group"
                 >
                   {/* Header */}
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 bg-muted/20 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 overflow-hidden">
+                    <div className="w-16 h-16 pixel-box-inset flex items-center justify-center text-3xl flex-shrink-0 overflow-hidden">
                       <img
                         src={imageUrl}
                         alt={article.title}
                         className="w-full h-full object-cover transition-opacity group-hover:opacity-80"
                         onError={(e) => {
-                          // Fallback to placeholder emoji if image fails
                           e.currentTarget.src =
                             "https://via.placeholder.com/64x64?text=📰";
                           e.currentTarget.onerror = null;
@@ -307,80 +304,67 @@ const News = () => {
                         <Badge className={getSeverityColor(severity)}>
                           {severity.toUpperCase()} ALERT
                         </Badge>
-                        <Badge variant="outline" className="text-xs">
+                        <Badge className="text-cyan-300 bg-cyan-900/50 border-cyan-300/50 text-xs">
                           {category.toUpperCase()}
                         </Badge>
                       </div>
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-pink-500 transition-colors line-clamp-2 text-cyan-300">
                         {article.title}
                       </h3>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
-                    {article.description || "No description available."}
+                  <p className="text-gray-400 mb-4 line-clamp-3">
+                    {article.description ||
+                      "No description available. Accessing direct log entry..."}
                   </p>
 
                   {/* Footer */}
-                  <div className="flex items-center justify-between text-sm border-t border-border pt-4">
-                    <div className="flex items-center gap-4 text-muted-foreground">
+                  <div className="flex items-center justify-between text-sm border-t border-gray-600 pt-4">
+                    <div className="flex items-center gap-4 text-gray-500">
                       <span>{article.source.name}</span>
                       <span>•</span>
                       <span>{timeAgo}</span>
                       <span>•</span>
                       <span>{readTime} min read</span>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
+                    <ExternalLink className="w-4 h-4 text-pink-500 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </a>
               );
             })}
 
-            {/* No Results Message */}
+            {/* No Results Message - Changed card-glass to pixel-box */}
             {filteredArticles.length === 0 && searchQuery.length > 0 && (
-              <div className="text-center md:col-span-2 text-muted-foreground p-8 card-glass rounded-xl">
+              <div className="text-center md:col-span-2 text-gray-400 p-8 pixel-box">
                 <Search className="w-8 h-8 mx-auto mb-4" />
-                <h3 className="font-bold text-xl mb-2">No Results Found</h3>
+                <h3 className="font-bold text-xl mb-2 text-pink-500">
+                  No Data Logs Found
+                </h3>
                 <p>Try adjusting your search query or filters.</p>
               </div>
             )}
 
+            {/* Catch-all no article message */}
             {filteredArticles.length === 0 &&
               !loading &&
               !error &&
-              searchQuery.length === 0 &&
-              newsArticles.length > 0 &&
-              selectedCategory !== "all" && (
-                <div className="text-center md:col-span-2 text-muted-foreground p-8 card-glass rounded-xl">
-                  <h3 className="font-bold text-xl mb-2">
-                    No Articles in This Category
+              newsArticles.length === 0 && (
+                <div className="text-center md:col-span-2 text-gray-400 p-8 pixel-box">
+                  <h3 className="font-bold text-xl mb-2 text-pink-500">
+                    No New Articles Available
                   </h3>
-                  <p>Try selecting "All News" to see more articles.</p>
-                </div>
-              )}
-
-            {filteredArticles.length === 0 &&
-              !loading &&
-              !error &&
-              newsArticles.length === 0 &&
-              searchQuery.length === 0 &&
-              selectedCategory === "all" && (
-                <div className="text-center md:col-span-2 text-muted-foreground p-8 card-glass rounded-xl">
-                  <h3 className="font-bold text-xl mb-2">No Articles Found</h3>
-                  <p>
-                    The news source did not return any articles for the current
-                    query on your server.
-                  </p>
+                  <p>System awaits new threat intelligence reports.</p>
                 </div>
               )}
           </div>
         )}
 
-        {/* Load More */}
+        {/* Load More Button - Changed to pixel alt button */}
         <div className="text-center mt-8">
-          <button className="text-primary hover:underline font-medium">
-            Load More Articles →
+          <button className="btn-pixel-alt px-8 py-2 font-bold">
+            LOAD MORE DATA →
           </button>
         </div>
       </div>

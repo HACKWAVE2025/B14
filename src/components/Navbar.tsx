@@ -18,15 +18,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast"; // Import useToast
+import "@/PixelLanding.css"; // <-- Import the styles
 
 export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const isActive = (path: string) => location.pathname === path;
+  // Helper function to render pixel buttons based on active state
+  const PixelNavButton = ({
+    to,
+    icon: Icon,
+    label,
+  }: {
+    to: string;
+    icon: React.ElementType;
+    label: string;
+  }) => {
+    const isActive = location.pathname === to;
+    return (
+      <Link to={to}>
+        <Button
+          className={isActive ? "btn-pixel-main gap-2" : "btn-pixel-alt gap-2"}
+        >
+          <Icon className="w-4 h-4" />
+          {label}
+        </Button>
+      </Link>
+    );
+  };
 
-  // Function to load and parse user data from localStorage
   const getUserData = () => {
     const userDataString = localStorage.getItem("userData");
     if (userDataString) {
@@ -50,100 +71,76 @@ export const Navbar = () => {
       .substring(0, 2)
       .toUpperCase() || "AR";
 
-  // Function to handle the actual logout process
   const handleLogout = () => {
-    // 1. Clear authentication data from local storage
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
-
-    // 2. Display success message
     toast({
       title: "Logged out!",
       description: "You have been successfully signed out.",
     });
-
-    // 3. Redirect to the landing page
     navigate("/");
   };
 
   return (
-    <nav className="border-b border-border bg-card/50 backdrop-blur-lg sticky top-0 z-50">
+    // Updated navbar styling to match pixel theme
+    <nav className="pixel-box sticky top-4 left-4 right-4 z-50 mx-4">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/dashboard" className="flex items-center gap-2">
-          <Shield className="w-8 h-8 text-primary" />
-          <span className="text-2xl font-bold gradient-text">Scamurai</span>
+        {/* Logo - Updated to match landing page pixel styling */}
+        <Link to="/dashboard" className="flex items-center gap-3">
+          <Shield className="w-8 h-8 text-cyan-300" />
+          <span className="text-2xl font-bold text-cyan-300 [text-shadow:_0_0_8px_theme(colors.cyan.300)]">
+            Scamurai
+          </span>
         </Link>
 
-        {/* Navigation Links */}
+        {/* Navigation Links - Using PixelNavButton */}
         <div className="flex items-center gap-2">
-          <Link to="/dashboard">
-            <Button
-              variant={isActive("/dashboard") ? "default" : "ghost"}
-              className="gap-2"
-            >
-              <Home className="w-4 h-4" />
-              Dashboard
-            </Button>
-          </Link>
-          <Link to="/games">
-            <Button
-              variant={isActive("/games") ? "default" : "ghost"}
-              className="gap-2"
-            >
-              <Gamepad2 className="w-4 h-4" />
-              Games
-            </Button>
-          </Link>
-          <Link to="/news">
-            <Button
-              variant={isActive("/news") ? "default" : "ghost"}
-              className="gap-2"
-            >
-              <Newspaper className="w-4 h-4" />
-              News
-            </Button>
-          </Link>
-          <Link to="/profile">
-            <Button
-              variant={isActive("/profile") ? "default" : "ghost"}
-              className="gap-2"
-            >
-              <User className="w-4 h-4" />
-              Profile
-            </Button>
-          </Link>
+          <PixelNavButton to="/dashboard" icon={Home} label="Dashboard" />
+          <PixelNavButton to="/games" icon={Gamepad2} label="Games" />
+          <PixelNavButton to="/news" icon={Newspaper} label="News" />
+          <PixelNavButton to="/profile" icon={User} label="Profile" />
         </div>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative text-white hover:text-cyan-300"
+          >
             <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full animate-pulse"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="gap-2">
-                <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-sm">
-                  {/* Display user initials in avatar */}
+              {/* Custom Button for Dropdown trigger */}
+              <button className="btn-pixel-alt w-16 h-10 flex items-center justify-center gap-2">
+                <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center font-bold text-xs text-white">
                   {initials}
                 </div>
-              </Button>
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account ({username})</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+            <DropdownMenuContent align="end" className="w-56 pixel-box">
+              {" "}
+              {/* Applied pixel-box to dropdown */}
+              <DropdownMenuLabel className="text-white">
+                My Account ({username})
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-gray-600" />
               <DropdownMenuItem asChild>
-                <Link to="/profile" className="cursor-pointer">
+                <Link
+                  to="/profile"
+                  className="cursor-pointer text-gray-200 hover:bg-gray-700/50"
+                >
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-gray-600" />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="cursor-pointer text-destructive"
+                className="cursor-pointer text-pink-500 hover:bg-gray-700/50"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
