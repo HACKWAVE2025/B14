@@ -67,7 +67,9 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background: linear-gradient(180deg, hsl(222 47% 11%), hsl(230 50% 15%));
+    /* CHANGE: Removed the gradient to ensure a solid, dark background
+       which improves the visibility and effect of particles across ALL pages. */
+    /* background: linear-gradient(180deg, hsl(222 47% 11%), hsl(230 50% 15%)); */
     min-height: 100vh;
   }
 

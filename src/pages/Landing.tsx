@@ -1,35 +1,127 @@
+// REPLACED FILE: src/pages/Landing.tsx
 /*
  * REPLACED FILE: src/pages/Landing.tsx
  * The new "Pixel Game World" theme!
  */
 import { Link } from "react-router-dom";
-import {
-  Shield,
-  Target,
-  Trophy,
-  Users,
-  Zap,
-  Lock,
-  MessageSquare,
-  ChevronRight,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/PixelLanding.css"; // <-- Import the styles
 
+// Inline SVG icon components
+const Shield = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <path
+      d="M12 2L3 5v6c0 5 3.8 9.7 9 11 5.2-1.3 9-6 9-11V5l-9-3z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const Target = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <circle cx="12" cy="12" r="8" strokeWidth="1.5" />
+    <circle cx="12" cy="12" r="4" strokeWidth="1.5" />
+    <path d="M21 12h-2" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M5 12H3" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const Trophy = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <path d="M8 21h8" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M12 17v4" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M17 3H7v4a5 5 0 0 0 5 5 5 5 0 0 0 5-5V3z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M3 7h3v3a4 4 0 0 1-3-3V7zM21 7h-3v3a4 4 0 0 0 3-3V7z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const Users = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <path
+      d="M16 11a4 4 0 1 0-8 0"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M2 21v-1a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v1"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const Zap = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <path
+      d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const Lock = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <rect x="3" y="11" width="18" height="11" rx="2" strokeWidth="1.5" />
+    <path
+      d="M7 11V8a5 5 0 0 1 10 0v3"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const MessageSquare = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <path
+      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const ChevronRight = (props: any) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+    <polyline
+      points="9 18 15 12 9 6"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const Landing = () => {
   return (
-    <div className="min-h-screen font-pixel scanline-bg text-white">
-      {/* Navigation - Aligned extreme left (Logo) and extreme right (Buttons) */}
+    // CHANGE: Removed 'scanline-bg' class.
+    <div className="min-h-screen font-pixel text-white">
+      {/* Navigation - Looks like a game's top bar */}
       <nav className="pixel-box sticky top-4 left-4 right-4 z-50 mx-4">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Logo/Name: Left */}
           <div className="flex items-center gap-3">
             <Shield className="w-8 h-8 text-cyan-300" />
             <span className="text-2xl font-bold text-cyan-300 [text-shadow:_0_0_8px_theme(colors.cyan.300)]">
               Scamurai
             </span>
           </div>
-          {/* Buttons: Right */}
           <div className="flex gap-4 items-center">
             <Link to="/login">
               <Button className="btn-pixel-alt">Login</Button>
@@ -41,16 +133,18 @@ const Landing = () => {
         </div>
       </nav>
 
-      {/* Hero Section - Title spread horizontally on large screens */}
+      {/* Hero Section - The Title Screen */}
       <div className="container mx-auto px-6 py-32 text-center">
-        <div className="max-w-6xl mx-auto space-y-8">
-          {/* FIX: Decreased font size and added line breaks for better alignment */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-            MASTER DIGITAL SECURITY
+        <div className="max-w-4xl mx-auto space-y-8">
+          <h1 className="text-6xl md:text-8xl font-bold leading-none">
+            MASTER DIGITAL
+            <br />
+            SECURITY
             <br />
             THROUGH THE
+            <br />
             <span className="text-pink-500 [text-shadow:_0_0_12px_theme(colors.pink.500)]">
-              &nbsp;GAME
+              GAME
             </span>
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -63,7 +157,7 @@ const Landing = () => {
                 PRESS START
               </Button>
             </Link>
-            <Link to="/signup">
+            <Link to="/">
               <Button className="btn-pixel-alt text-xl px-10 py-5">
                 TUTORIAL
               </Button>
@@ -214,16 +308,14 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Footer - Aligned extreme left and extreme right */}
+      {/* Footer */}
       <footer className="pixel-box mt-20 mx-4 mb-4">
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Left Content */}
             <div className="flex items-center gap-2">
               <Shield className="w-6 h-6 text-cyan-300" />
               <span className="font-bold">Scamurai</span>
             </div>
-            {/* Right Content */}
             <p className="text-sm text-gray-500">
               © 2025 Scamurai. Making digital payments safer.
             </p>

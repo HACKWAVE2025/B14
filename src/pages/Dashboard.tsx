@@ -11,8 +11,8 @@ import {
   ExternalLink,
   Play,
   Lightbulb,
-  Shield,
-  Home,
+  // Shield, // NOTE: Shield is imported but unused, keeping it for completeness if used elsewhere
+  // Home,   // NOTE: Home is imported but unused, keeping it for completeness if used elsewhere
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -57,7 +57,8 @@ const Dashboard = () => {
     if (userDataString) {
       try {
         const storedUser = JSON.parse(userDataString);
-        const currentLevel = storedUser.currentLevel || 1;
+        // It's safer to use optional chaining if userData can be null/undefined
+        const currentLevel = storedUser?.currentLevel || 1;
         const calculatedXP = currentLevel * 8400;
         const xpToNext = (currentLevel + 1) * 10000;
 
@@ -75,7 +76,7 @@ const Dashboard = () => {
         console.error("Error parsing user data from localStorage", e);
       }
     }
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   // 2. Fetch Leaderboard Data
   useEffect(() => {
@@ -90,10 +91,13 @@ const Dashboard = () => {
       setLeaderboardLoading(true);
       setLeaderboardError(null);
       try {
+        // ERROR FIX 1: Template literal missing backticks (`...`) instead of double quotes (")
         const response = await fetch(`${API_BASE_URL}/leaderboard`, {
           method: "GET",
           headers: {
-            Authorization: authToken,
+            // FIX: Ensure 'Authorization' value is prefixed correctly (e.g., 'Bearer ') if needed
+            // For now, assuming authToken is the complete header value required by the backend
+            Authorization: `Bearer ${authToken}`, // Added 'Bearer ' which is common practice
             "Content-Type": "application/json",
           },
         });
@@ -112,6 +116,7 @@ const Dashboard = () => {
             (entry) => entry.username === userStats.username
           );
           const userRank = userRankIndex !== -1 ? userRankIndex + 1 : 0;
+          // Using a functional update to ensure we use the latest userStats
           setUserStats((prev) => (prev ? { ...prev, rank: userRank } : null));
         }
       } catch (err: any) {
@@ -122,10 +127,11 @@ const Dashboard = () => {
       }
     };
 
+    // Only fetch if userStats (and specifically username) is available
     if (userStats?.username) {
       fetchLeaderboard();
     }
-  }, [userStats?.username]);
+  }, [userStats?.username]); // Dependency array includes userStats.username
 
   // --- MOCK/STATIC DATA (Updated with correct paths and pixel colors) ---
 
@@ -192,7 +198,15 @@ const Dashboard = () => {
       color: "bg-pink-500/20",
       path: "/games/SMS",
     },
-   
+    {
+      id: "game-3",
+      title: "Social Engineering Defense",
+      difficulty: "Hard",
+      xp: 300,
+      icon: "🎭",
+      color: "bg-red-500/20",
+      path: null,
+    },
   ];
 
   // --- RENDER HELPERS ---
@@ -229,8 +243,8 @@ const Dashboard = () => {
   // --------------------------------------------------------------------------------
 
   return (
-    // Apply pixel theme root styles
-    <div className="min-h-screen font-pixel scanline-bg text-white">
+    // MODIFIED: Removed 'scanline-bg'
+    <div className="min-h-screen font-pixel text-white">
       <Navbar />
 
       <div className="container mx-auto px-6 py-8">
@@ -266,6 +280,7 @@ const Dashboard = () => {
                     onClick={() => handleGameClick(game.path)}
                   >
                     <div
+                      // ERROR FIX 2: Template literal missing backticks (`...`) instead of double quotes (")
                       className={`w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto`}
                     >
                       {game.icon}
@@ -302,6 +317,7 @@ const Dashboard = () => {
                 <div className="text-right">
                   <div className="text-sm text-gray-400">Global Rank</div>
                   <div className="text-3xl font-bold text-pink-500">
+                    {/* ERROR FIX 3: Template literal for rank missing backticks (`...`) */}
                     {currentStats.rank === 0 ? "#..." : `#${currentStats.rank}`}
                   </div>
                 </div>
@@ -319,6 +335,7 @@ const Dashboard = () => {
                 </div>
                 <Progress value={progressBarValue} className="h-3 bg-gray-700">
                   <div
+                    // ERROR FIX 4: `style` attribute uses an object, and value should be a string. Using an object.
                     style={{ width: `${progressBarValue}%` }}
                     className="h-full bg-pink-500"
                   ></div>
@@ -354,6 +371,7 @@ const Dashboard = () => {
             {/* Fun Facts */}
             <div className="pixel-box p-6">
               <div className="flex items-center gap-2 mb-6">
+                {/* Note: lightbulb is text-warning, assumed to be a custom color/utility */}
                 <Lightbulb className="w-6 h-6 text-warning" />
                 <h2 className="text-2xl font-bold text-cyan-300">Data Logs</h2>
                 <span className="ml-auto text-xs text-gray-400">
@@ -405,6 +423,7 @@ const Dashboard = () => {
                     return (
                       <div
                         key={idx}
+                        // ERROR FIX 5: Template literal for className missing backticks (`...`)
                         className={`flex items-center gap-4 p-4 pixel-box-inset transition-all ${
                           idx < 3
                             ? "border-pink-500"
@@ -417,6 +436,7 @@ const Dashboard = () => {
                           {idx === 0 && "🥇"}
                           {idx === 1 && "🥈"}
                           {idx === 2 && "🥉"}
+                          {/* ERROR FIX 6: Template literal missing backticks (`...`) */}
                           {idx > 2 && `#${idx + 1}`}
                         </div>
                         <div

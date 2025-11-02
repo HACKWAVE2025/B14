@@ -66,7 +66,7 @@ const Signup = () => {
       // Successful signup
       toast({
         title: "Account created!",
-        description: "Welcome to FraudGuard! Please log in.",
+        description: "Welcome to Scamurai! Please log in.",
       });
 
       // Navigate to login page after successful signup
@@ -85,14 +85,14 @@ const Signup = () => {
   };
 
   return (
-    // Apply pixel theme root styles
-    <div className="min-h-screen font-pixel scanline-bg text-white flex items-center justify-center px-6 py-12">
+    // MODIFIED: Removed 'scanline-bg'
+    <div className="min-h-screen font-pixel text-white flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         {/* Logo - Updated to match landing page pixel styling */}
         <Link to="/" className="flex items-center justify-center gap-3 mb-10">
           <Shield className="w-10 h-10 text-cyan-300" />
           <span className="text-3xl font-bold text-cyan-300 [text-shadow:_0_0_8px_theme(colors.cyan.300)]">
-            FraudGuard
+            Scamurai
           </span>
         </Link>
 

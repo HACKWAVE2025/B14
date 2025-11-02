@@ -3,6 +3,21 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  /* IMPORTANT: Ensure #root doesn't hide the particles outside its bounds */
+  position: relative; 
+}
+
+/* ADDED CLASS TO MAKE PARTICLE BACKGROUND VISIBLE */
+.particle-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Crucial: Set a negative z-index to position it behind all content (which typically have z-index 0 or higher) */
+  z-index: -10; 
+  /* Optionally set a background color here if not relying on index.css body background */
+  /* background: hsl(222 47% 11%); */
 }
 
 .logo {

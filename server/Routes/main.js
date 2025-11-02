@@ -196,7 +196,7 @@ router.post("/signup", async (req, res) => {
 
 
 
-router.get("/leaderboard",authenticateUser, async (req, res) => {
+router.get("/leaderboard", async (req, res) => {
   try {
     const leaderboard = await User.find({})
       .select("username shieldCoins currentLevel") 

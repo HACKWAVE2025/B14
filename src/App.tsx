@@ -14,33 +14,41 @@ import StoryGame from "./pages/StoryGame";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SmishingGame from "./pages/SMS";
+// New Import
+import ParticlesBackground from "./components/ParticlesBackground";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/games" element={<Games />} />
-            <Route path="/games/story" element={<StoryGame />} />
-            <Route path="/games/SMS" element={<SmishingGame />} />
-            <Route path="/news" element={<News />} />
-          </Route>
-        
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    {/* RENDER THE PARTICLE BACKGROUND HERE TO COVER ALL PAGES */}
+    <ParticlesBackground />
+
+    {/* NEW: Wrapper to explicitly place all page content ABOVE the ParticlesBackground */}
+    <div className="relative z-[1] min-h-screen">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/games/story" element={<StoryGame />} />
+              <Route path="/games/SMS" element={<SmishingGame />} />
+              <Route path="/news" element={<News />} />
+            </Route>
+
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </div>
   </QueryClientProvider>
 );
 
