@@ -1,3 +1,4 @@
+//App.tsx
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,17 +15,17 @@ import StoryGame from "./pages/StoryGame";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SmishingGame from "./pages/SMS";
-// New Import
+// NEW: Import Particles Background
 import ParticlesBackground from "./components/ParticlesBackground";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    {/* RENDER THE PARTICLE BACKGROUND HERE TO COVER ALL PAGES */}
+    {/* NEW: Render the Particles component globally at the root */}
     <ParticlesBackground />
 
-    {/* NEW: Wrapper to explicitly place all page content ABOVE the ParticlesBackground */}
+    {/* NEW: Wrap application content with z-index to layer it ABOVE particles */}
     <div className="relative z-[1] min-h-screen">
       <TooltipProvider>
         <Toaster />

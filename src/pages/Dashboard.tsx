@@ -1,5 +1,6 @@
 /*
  * REFACTOR: Applied Pixel Game World theme from Landing.tsx.
+ * MODIFIED: Added "Qyest" prank and "Win Money" sidebar prank.
  */
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -11,8 +12,8 @@ import {
   ExternalLink,
   Play,
   Lightbulb,
-  // Shield, // NOTE: Shield is imported but unused, keeping it for completeness if used elsewhere
-  // Home,   // NOTE: Home is imported but unused, keeping it for completeness if used elsewhere
+  Shield,
+  Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -20,6 +21,9 @@ import { Navbar } from "@/components/Navbar";
 import { ChatBot } from "@/components/ChatBot";
 import { useState, useEffect } from "react";
 import "@/PixelLanding.css"; // <-- Import the styles
+
+// --- Prank Imports ---
+import { PrankModal } from "@/components/PrankModal";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -51,14 +55,16 @@ const Dashboard = () => {
   const [leaderboardLoading, setLeaderboardLoading] = useState(true);
   const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
 
+  // --- Prank State ---
+  const [isPrankModalOpen, setIsPrankModalOpen] = useState(false);
+
   // 1. Load User Data from Local Storage
   useEffect(() => {
     const userDataString = localStorage.getItem("userData");
     if (userDataString) {
       try {
         const storedUser = JSON.parse(userDataString);
-        // It's safer to use optional chaining if userData can be null/undefined
-        const currentLevel = storedUser?.currentLevel || 1;
+        const currentLevel = storedUser.currentLevel || 1;
         const calculatedXP = currentLevel * 8400;
         const xpToNext = (currentLevel + 1) * 10000;
 
@@ -76,7 +82,7 @@ const Dashboard = () => {
         console.error("Error parsing user data from localStorage", e);
       }
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   // 2. Fetch Leaderboard Data
   useEffect(() => {
@@ -91,13 +97,10 @@ const Dashboard = () => {
       setLeaderboardLoading(true);
       setLeaderboardError(null);
       try {
-        // ERROR FIX 1: Template literal missing backticks (`...`) instead of double quotes (")
         const response = await fetch(`${API_BASE_URL}/leaderboard`, {
           method: "GET",
           headers: {
-            // FIX: Ensure 'Authorization' value is prefixed correctly (e.g., 'Bearer ') if needed
-            // For now, assuming authToken is the complete header value required by the backend
-            Authorization: `Bearer ${authToken}`, // Added 'Bearer ' which is common practice
+            Authorization: authToken,
             "Content-Type": "application/json",
           },
         });
@@ -116,7 +119,6 @@ const Dashboard = () => {
             (entry) => entry.username === userStats.username
           );
           const userRank = userRankIndex !== -1 ? userRankIndex + 1 : 0;
-          // Using a functional update to ensure we use the latest userStats
           setUserStats((prev) => (prev ? { ...prev, rank: userRank } : null));
         }
       } catch (err: any) {
@@ -127,11 +129,10 @@ const Dashboard = () => {
       }
     };
 
-    // Only fetch if userStats (and specifically username) is available
     if (userStats?.username) {
       fetchLeaderboard();
     }
-  }, [userStats?.username]); // Dependency array includes userStats.username
+  }, [userStats?.username]);
 
   // --- MOCK/STATIC DATA (Updated with correct paths and pixel colors) ---
 
@@ -179,41 +180,49 @@ const Dashboard = () => {
     },
   ];
 
+  // --- UPDATED QUICK GAMES ARRAY ---
   const quickGames = [
     {
-      id: "game-1",
+      id: "game-1-prank", // This is the new Prank Card
       title: "Phishing Email Detective",
       difficulty: "Easy",
       xp: 100,
       icon: "🎣",
       color: "bg-cyan-300/20",
-      path: "/games/story",
+      path: null, // No path, it just triggers the modal
     },
     {
       id: "game-2",
-      title: "SMS fraud Spotter",
+      title: "SMS Fraud Spotter",
       difficulty: "Medium",
       xp: 200,
       icon: "🌐",
       color: "bg-pink-500/20",
-      path: "/games/SMS",
+      path: "/games/SMS", // Real path
     },
     {
-      id: "game-3",
-      title: "Social Engineering Defense",
-      difficulty: "Hard",
-      xp: 300,
-      icon: "🎭",
-      color: "bg-red-500/20",
-      path: null,
+      id: "game-1-real", // This is the Real Card
+      title: "Phishing Email Detective",
+      difficulty: "Easy",
+      xp: 100,
+      icon: "🎣",
+      color: "bg-cyan-300/20",
+      path: "/games/story", // Real path
     },
   ];
 
   // --- RENDER HELPERS ---
 
-  const handleGameClick = (path: string | null) => {
-    if (path) {
-      navigate(path);
+  const handleGameClick = (game: (typeof quickGames)[0]) => {
+    // Check if this is the prank game
+    if (game.id === "game-1-prank") {
+      setIsPrankModalOpen(true);
+      return;
+    }
+
+    // Otherwise, navigate to the real game path
+    if (game.path) {
+      navigate(game.path);
     }
   };
 
@@ -243,9 +252,16 @@ const Dashboard = () => {
   // --------------------------------------------------------------------------------
 
   return (
-    // MODIFIED: Removed 'scanline-bg'
+    // MODIFIED: Removed 'scanline-bg' to allow particle background to show through
     <div className="min-h-screen font-pixel text-white">
       <Navbar />
+
+      {/* --- PRANK MODAL (hidden by default) --- */}
+      <PrankModal
+        open={isPrankModalOpen}
+        onOpenChange={setIsPrankModalOpen}
+      />
+      {/* ------------------------------------- */}
 
       <div className="container mx-auto px-6 py-8">
         {/* Welcome & Stats Header */}
@@ -276,11 +292,11 @@ const Dashboard = () => {
                 {quickGames.map((game) => (
                   <div
                     key={game.id}
+                    // The onClick is on the whole card
+                    onClick={() => handleGameClick(game)}
                     className="pixel-box-inset p-6 hover:translate-y-0 hover:shadow-none transition-transform cursor-pointer group flex flex-col"
-                    onClick={() => handleGameClick(game.path)}
                   >
                     <div
-                      // ERROR FIX 2: Template literal missing backticks (`...`) instead of double quotes (")
                       className={`w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto`}
                     >
                       {game.icon}
@@ -291,13 +307,22 @@ const Dashboard = () => {
                     <div className="flex justify-between text-sm text-gray-400 mb-4">
                       <span>{game.difficulty}</span>
                       <span className="text-cyan-300 font-medium">
-                        +{game.xp} XP
+                        {game.xp > 0 ? `+${game.xp} XP` : ""}
                       </span>
                     </div>
-                    <Button className="btn-pixel-main w-full mt-auto" size="sm">
+
+                    {/* --- SIMPLIFIED BUTTON --- */}
+                    <Button
+                      className="btn-pixel-main w-full mt-auto"
+                      size="sm"
+                    >
                       <Play className="w-4 h-4 mr-2" />
-                      Execute Quest
+                      {/* --- THIS IS THE PRANK TEXT --- */}
+                      {game.id === "game-1-prank"
+                        ? "Execute Qyest"
+                        : "Execute Quest"}
                     </Button>
+                    {/* --------------------------- */}
                   </div>
                 ))}
               </div>
@@ -317,7 +342,6 @@ const Dashboard = () => {
                 <div className="text-right">
                   <div className="text-sm text-gray-400">Global Rank</div>
                   <div className="text-3xl font-bold text-pink-500">
-                    {/* ERROR FIX 3: Template literal for rank missing backticks (`...`) */}
                     {currentStats.rank === 0 ? "#..." : `#${currentStats.rank}`}
                   </div>
                 </div>
@@ -335,7 +359,6 @@ const Dashboard = () => {
                 </div>
                 <Progress value={progressBarValue} className="h-3 bg-gray-700">
                   <div
-                    // ERROR FIX 4: `style` attribute uses an object, and value should be a string. Using an object.
                     style={{ width: `${progressBarValue}%` }}
                     className="h-full bg-pink-500"
                   ></div>
@@ -371,7 +394,6 @@ const Dashboard = () => {
             {/* Fun Facts */}
             <div className="pixel-box p-6">
               <div className="flex items-center gap-2 mb-6">
-                {/* Note: lightbulb is text-warning, assumed to be a custom color/utility */}
                 <Lightbulb className="w-6 h-6 text-warning" />
                 <h2 className="text-2xl font-bold text-cyan-300">Data Logs</h2>
                 <span className="ml-auto text-xs text-gray-400">
@@ -423,7 +445,6 @@ const Dashboard = () => {
                     return (
                       <div
                         key={idx}
-                        // ERROR FIX 5: Template literal for className missing backticks (`...`)
                         className={`flex items-center gap-4 p-4 pixel-box-inset transition-all ${
                           idx < 3
                             ? "border-pink-500"
@@ -436,7 +457,6 @@ const Dashboard = () => {
                           {idx === 0 && "🥇"}
                           {idx === 1 && "🥈"}
                           {idx === 2 && "🥉"}
-                          {/* ERROR FIX 6: Template literal missing backticks (`...`) */}
                           {idx > 2 && `#${idx + 1}`}
                         </div>
                         <div
@@ -472,7 +492,72 @@ const Dashboard = () => {
           </div>
 
           {/* Scam News Sidebar - 25% */}
-          
+          <div className="w-full lg:w-80 space-y-6">
+            <div className="pixel-box p-6 sticky top-24">
+              <div className="flex items-center gap-2 mb-6">
+                <AlertTriangle className="w-6 h-6 text-pink-500" />
+                <h2 className="text-xl font-bold text-cyan-300">
+                  System Alerts
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {scamNews.map((news, idx) => (
+                  <div
+                    key={idx}
+                    className="border-l-4 border-pink-500 pl-4 py-2 pixel-box-inset hover:bg-gray-800/50 transition-colors cursor-pointer"
+                  >
+                    <div
+                      className={`inline-block px-2 py-1 text-xs font-bold mb-2 ${
+                        news.severity === "high"
+                          ? "bg-red-500 text-white"
+                          : "bg-yellow-500 text-gray-900"
+                      }`}
+                    >
+                      {news.severity.toUpperCase()}
+                    </div>
+                    <h3 className="font-bold text-sm mb-2 line-clamp-2 text-gray-200">
+                      {news.title}
+                    </h3>
+                    <div className="flex justify-between items-center text-xs text-gray-500">
+                      <span>{news.source}</span>
+                      <span>{news.time}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Link to="/news">
+                <Button className="btn-pixel-alt w-full mt-4" size="sm">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View All News
+                </Button>
+              </Link>
+            </div>
+
+            {/* --- [NEW] PRANK 2: "WIN MONEY" --- */}
+            {/* This is not sticky, so it appears when scrolling */}
+            <div
+              className="pixel-box p-6 border-4 border-green-500 hover:shadow-lg transition-all cursor-pointer animate-pulse"
+              onClick={() => setIsPrankModalOpen(true)}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-4xl">💰</span>
+                <h2 className="text-2xl font-bold text-green-400">
+                  Win ₹10,000!
+                </h2>
+              </div>
+              <p className="text-gray-300 mb-5 text-lg">
+                Play our new featured game and get a chance to win ₹10,000
+                instantly!
+              </p>
+              <Button className="btn-pixel-main bg-green-600 hover:bg-green-500 w-full text-lg p-3">
+                Play & Win !
+              </Button>
+            </div>
+            {/* ---------------------------------- */}
+
+          </div>
         </div>
       </div>
 
