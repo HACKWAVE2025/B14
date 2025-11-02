@@ -103,14 +103,7 @@ export const Navbar = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative text-white hover:text-cyan-300"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
-          </Button>
+          
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
