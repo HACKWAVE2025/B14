@@ -192,15 +192,7 @@ const Dashboard = () => {
       color: "bg-pink-500/20",
       path: "/games/SMS",
     },
-    {
-      id: "game-3",
-      title: "Social Engineering Defense",
-      difficulty: "Hard",
-      xp: 300,
-      icon: "🎭",
-      color: "bg-red-500/20",
-      path: null,
-    },
+   
   ];
 
   // --- RENDER HELPERS ---

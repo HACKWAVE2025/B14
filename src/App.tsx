@@ -35,7 +35,7 @@ const App = () => (
             <Route path="/games/SMS" element={<SmishingGame />} />
             <Route path="/news" element={<News />} />
           </Route>
-
+        
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
