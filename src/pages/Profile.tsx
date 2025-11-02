@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "@/PixelLanding.css"; // <-- Import the styles
 
@@ -38,6 +39,8 @@ const Profile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+const navigate = useNavigate();
 
   // Fetch user profile data
   useEffect(() => {
@@ -192,29 +195,11 @@ const Profile = () => {
                   <span className="font-bold text-cyan-300">
                     Level {profile.currentLevel}
                   </span>
-                  <span className="text-gray-400">
-                    {xp} / {xpToNext} XP
-                  </span>
                 </div>
-                <Progress value={percentage} className="h-3 bg-gray-700">
-                  <div
-                    style={{ width: `${percentage}%` }}
-                    className="h-full bg-pink-500"
-                  ></div>{" "}
-                  {/* Customizing Progress bar for pixel theme */}
-                </Progress>
-                <p className="text-xs text-gray-500">
-                  {xpToNext - xp} XP until next promotion (
-                  {profile.currentLevel + 1})
-                </p>
               </div>
             </div>
 
             {/* Actions (Kept for completeness) - Replaced with pixel buttons */}
-            <div className="space-y-2">
-              <Button className="btn-pixel-main">Edit Profile</Button>
-              <Button className="btn-pixel-alt w-full">Share Profile</Button>
-            </div>
           </div>
         </div>
 
@@ -295,7 +280,12 @@ const Profile = () => {
               <p className="text-sm text-gray-400 mb-4">
                 Complete today's challenge for bonus XP!
               </p>
-              <Button className="btn-pixel-main w-full">Start Challenge</Button>
+              <Button
+                onClick={() => navigate("/games/SMS")}
+                className="btn-pixel-main w-full"
+              >
+                Start Challenge
+              </Button>
             </div>
           </div>
         </div>

@@ -50,7 +50,7 @@ const Games = () => {
     },
     {
       id: 2,
-      title: "Vishing Scam Analyst",
+      title: "SMS Fraud Detector",
       description: "Analyze urgent text messages (smishing) to spot red flags",
       category: "social",
       difficulty: "medium",
@@ -63,49 +63,6 @@ const Games = () => {
       path: "/games/SMS",
     },
     {
-      id: 3,
-      title: "Social Media Scam Alert",
-      description: "Navigate social media scenarios and identify scam posts",
-      category: "social",
-      difficulty: "easy",
-      duration: 6,
-      xp: 120,
-      players: 18932,
-      rating: 4.9,
-      locked: false,
-      icon: "📱",
-      path: null,
-    },
-    {
-      id: 4,
-      title: "Payment Gateway Security",
-      description: "Learn to verify secure payment gateways and avoid fraud",
-      category: "payments",
-      difficulty: "hard",
-      duration: 12,
-      xp: 300,
-      players: 8234,
-      rating: 4.6,
-      locked: false,
-      icon: "💳",
-      path: null,
-    },
-    {
-      id: 5,
-      title: "Voice Phishing Simulator",
-      description:
-        "Experience realistic vishing calls and learn to recognize them",
-      category: "social",
-      difficulty: "medium",
-      duration: 10,
-      xp: 220,
-      players: 9876,
-      rating: 4.8,
-      locked: false,
-      icon: "📞",
-      path: null,
-    },
-    {
       id: 6,
       title: "QR Code Safety Scanner",
       description:
@@ -116,7 +73,7 @@ const Games = () => {
       xp: 150,
       players: 14523,
       rating: 4.5,
-      locked: false,
+      locked: true,
       icon: "📷",
       path: null,
     },
@@ -146,7 +103,7 @@ const Games = () => {
       xp: 250,
       players: 11234,
       rating: 4.7,
-      locked: false,
+      locked: true,
       icon: "₿",
       path: null,
     },
@@ -325,26 +282,7 @@ const Games = () => {
         </div>
 
         {/* Daily Challenge Banner - Changed card-glass to pixel-box */}
-        <div className="pixel-box p-8 mt-8 border-pink-500/50 shadow-[0_0_10px_rgba(236,72,153,0.5)]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 pixel-box-inset flex items-center justify-center text-3xl border-pink-500/80">
-                🎯
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-1 text-pink-500">
-                  Daily Challenge Protocol
-                </h3>
-                <p className="text-gray-400">
-                  Complete today's special scenario for 2x XP!
-                </p>
-              </div>
-            </div>
-            <Button className="btn-pixel-main" size="lg" className="px-8">
-              START PROTOCOL
-            </Button>
-          </div>
-        </div>
+       
       </div>
 
       <ChatBot />

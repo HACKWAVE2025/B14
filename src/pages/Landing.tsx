@@ -2,7 +2,7 @@
  * REPLACED FILE: src/pages/Landing.tsx
  * The new "Pixel Game World" theme!
  */
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
   Shield,
   Target,
@@ -12,22 +12,24 @@ import {
   Lock,
   MessageSquare,
   ChevronRight,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import '@/PixelLanding.css'; // <-- Import the styles
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import "@/PixelLanding.css"; // <-- Import the styles
 
 const Landing = () => {
   return (
     <div className="min-h-screen font-pixel scanline-bg text-white">
-      {/* Navigation - Looks like a game's top bar */}
+      {/* Navigation - Aligned extreme left (Logo) and extreme right (Buttons) */}
       <nav className="pixel-box sticky top-4 left-4 right-4 z-50 mx-4">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          {/* Logo/Name: Left */}
           <div className="flex items-center gap-3">
             <Shield className="w-8 h-8 text-cyan-300" />
             <span className="text-2xl font-bold text-cyan-300 [text-shadow:_0_0_8px_theme(colors.cyan.300)]">
-              FraudGuard
+              Scamurai
             </span>
           </div>
+          {/* Buttons: Right */}
           <div className="flex gap-4 items-center">
             <Link to="/login">
               <Button className="btn-pixel-alt">Login</Button>
@@ -39,18 +41,16 @@ const Landing = () => {
         </div>
       </nav>
 
-      {/* Hero Section - The Title Screen */}
+      {/* Hero Section - Title spread horizontally on large screens */}
       <div className="container mx-auto px-6 py-32 text-center">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="text-6xl md:text-8xl font-bold leading-none">
-            MASTER DIGITAL
-            <br />
-            SECURITY
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* FIX: Decreased font size and added line breaks for better alignment */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            MASTER DIGITAL SECURITY
             <br />
             THROUGH THE
-            <br />
             <span className="text-pink-500 [text-shadow:_0_0_12px_theme(colors.pink.500)]">
-              GAME
+              &nbsp;GAME
             </span>
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -99,12 +99,40 @@ const Landing = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { icon: Target, title: 'Real-World Scenarios', description: 'Face authentic fraud attempts and learn to spot red flags.' },
-            { icon: Trophy, title: 'Compete & Learn', description: 'Earn XP, unlock items, and climb the leaderboard.' },
-            { icon: Zap, title: 'Instant Feedback', description: 'Get detailed explanations after each choice to learn fast.' },
-            { icon: Users, title: 'Community Driven', description: 'Join thousands learning together and challenge friends.' },
-            { icon: Lock, title: 'Expert Validated', description: 'All quests reviewed by real cybersecurity professionals.' },
-            { icon: MessageSquare, title: 'AI Sidekick', description: 'Get instant answers from our intelligent chatbot.' },
+            {
+              icon: Target,
+              title: "Real-World Scenarios",
+              description:
+                "Face authentic fraud attempts and learn to spot red flags.",
+            },
+            {
+              icon: Trophy,
+              title: "Compete & Learn",
+              description: "Earn XP, unlock items, and climb the leaderboard.",
+            },
+            {
+              icon: Zap,
+              title: "Instant Feedback",
+              description:
+                "Get detailed explanations after each choice to learn fast.",
+            },
+            {
+              icon: Users,
+              title: "Community Driven",
+              description:
+                "Join thousands learning together and challenge friends.",
+            },
+            {
+              icon: Lock,
+              title: "Expert Validated",
+              description:
+                "All quests reviewed by real cybersecurity professionals.",
+            },
+            {
+              icon: MessageSquare,
+              title: "AI Sidekick",
+              description: "Get instant answers from our intelligent chatbot.",
+            },
           ].map((feature) => (
             <div
               key={feature.title}
@@ -113,7 +141,9 @@ const Landing = () => {
               <div className="pixel-box-inset w-16 h-16 flex items-center justify-center mb-4">
                 <feature.icon className="w-8 h-8 text-pink-500" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-cyan-300">{feature.title}</h3>
+              <h3 className="text-xl font-bold mb-2 text-cyan-300">
+                {feature.title}
+              </h3>
               <p className="text-gray-300">{feature.description}</p>
             </div>
           ))}
@@ -124,9 +154,7 @@ const Landing = () => {
       <section className="container mx-auto px-6 py-24">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold mb-4">HOW TO PLAY</h2>
-          <p className="text-lg text-gray-400">
-            Your adventure starts here.
-          </p>
+          <p className="text-lg text-gray-400">Your adventure starts here.</p>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -186,16 +214,18 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer - Aligned extreme left and extreme right */}
       <footer className="pixel-box mt-20 mx-4 mb-4">
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Left Content */}
             <div className="flex items-center gap-2">
               <Shield className="w-6 h-6 text-cyan-300" />
-              <span className="font-bold">FraudGuard</span>
+              <span className="font-bold">Scamurai</span>
             </div>
+            {/* Right Content */}
             <p className="text-sm text-gray-500">
-              © 2025 FraudGuard. Making digital payments safer.
+              © 2025 Scamurai. Making digital payments safer.
             </p>
           </div>
         </div>

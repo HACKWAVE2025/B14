@@ -142,13 +142,15 @@ export const ChatBot = () => {
             {messages.map((msg, idx) => (
               <div
                 key={idx}
+                // Ensures user messages align right
                 className={`flex ${
                   msg.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 {/* Message Bubble styling update */}
                 <div
-                  className={`max-w-[85%] p-3 rounded-lg ${
+                  // FIX: Reduced max-w from [85%] to [75%] for more concise wrapping
+                  className={`max-w-[75%] p-3 rounded-lg ${
                     msg.role === "user"
                       ? "bg-pink-500 text-white"
                       : "bg-gray-700 text-white border border-gray-600"
@@ -159,7 +161,7 @@ export const ChatBot = () => {
               </div>
             ))}
 
-            {/* Quick Actions */}
+            {/* Quick Actions (only show initially) */}
             {messages.length === 1 && (
               <div className="space-y-2">
                 <p className="text-xs text-gray-400 text-center mb-3">

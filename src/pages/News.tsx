@@ -362,11 +362,7 @@ const News = () => {
         )}
 
         {/* Load More Button - Changed to pixel alt button */}
-        <div className="text-center mt-8">
-          <button className="btn-pixel-alt px-8 py-2 font-bold">
-            LOAD MORE DATA →
-          </button>
-        </div>
+        
       </div>
 
       <ChatBot />
