@@ -472,49 +472,7 @@ const Dashboard = () => {
           </div>
 
           {/* Scam News Sidebar - 25% */}
-          <div className="w-full lg:w-80 space-y-6">
-            <div className="pixel-box p-6 sticky top-24">
-              <div className="flex items-center gap-2 mb-6">
-                <AlertTriangle className="w-6 h-6 text-pink-500" />
-                <h2 className="text-xl font-bold text-cyan-300">
-                  System Alerts
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                {scamNews.map((news, idx) => (
-                  <div
-                    key={idx}
-                    className="border-l-4 border-pink-500 pl-4 py-2 pixel-box-inset hover:bg-gray-800/50 transition-colors cursor-pointer"
-                  >
-                    <div
-                      className={`inline-block px-2 py-1 text-xs font-bold mb-2 ${
-                        news.severity === "high"
-                          ? "bg-red-500 text-white"
-                          : "bg-yellow-500 text-gray-900"
-                      }`}
-                    >
-                      {news.severity.toUpperCase()}
-                    </div>
-                    <h3 className="font-bold text-sm mb-2 line-clamp-2 text-gray-200">
-                      {news.title}
-                    </h3>
-                    <div className="flex justify-between items-center text-xs text-gray-500">
-                      <span>{news.source}</span>
-                      <span>{news.time}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Link to="/news">
-                <Button className="btn-pixel-alt w-full mt-4" size="sm">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View All News
-                </Button>
-              </Link>
-            </div>
-          </div>
+          
         </div>
       </div>
 

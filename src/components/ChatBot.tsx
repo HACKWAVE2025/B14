@@ -12,7 +12,6 @@ interface Message {
 }
 
 export const ChatBot = () => {
-  // Reinstated isOpen state to control visibility
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -51,7 +50,6 @@ export const ChatBot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Handle API send logic (kept the same)
   const handleSend = async (customQuery?: string) => {
     const query = customQuery || input;
     if (!query.trim() || loading) return;
@@ -82,7 +80,7 @@ export const ChatBot = () => {
           data.error || "Sorry, I couldn't connect to the AI service.";
         botResponse = {
           role: "bot",
-          content: `⚠️ **Error:** ${errorContent}`,
+          content: `⚠ **Error:** ${errorContent}`,
         };
       } else {
         const aiResponseText =
@@ -100,7 +98,7 @@ export const ChatBot = () => {
       const botResponse: Message = {
         role: "bot",
         content:
-          "🚨 **Network Error**: Could not reach the FraudGuard server. Please ensure the backend is running.",
+          "🚨 *Network Error*: Could not reach the FraudGuard server. Please ensure the backend is running.",
       };
       setMessages((prev) => {
         const newMessages = prev.slice(0, -1);
@@ -113,12 +111,10 @@ export const ChatBot = () => {
 
   return (
     <>
-      {/* 1. Chat Toggle Button: Stays fixed in the corner (outside the chat panel) */}
+      {/* Chat Toggle Button - Using pixel button style */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        // Added conditional positioning to move the button when the panel is open
-        className={`btn-pixel-main fixed bottom-6 z-50 w-14 h-14 rounded-full shadow-glow flex items-center justify-center transition-all duration-300 
-          ${isOpen ? "right-[40%] mr-6" : "right-6"}`}
+        className="btn-pixel-main fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-glow z-50 flex items-center justify-center"
       >
         {isOpen ? (
           <X className="w-6 h-6" />
@@ -127,97 +123,100 @@ export const ChatBot = () => {
         )}
       </button>
 
-      {/* 2. Chat Window: Occupies 40% of the screen when open */}
-      <div
-        // Uses transform/translate to slide in/out
-        className={`fixed top-0 bottom-0 w-[40%] h-screen pixel-box flex flex-col z-40 transition-transform duration-300 overflow-hidden 
-            ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}`}
-      >
-        {/* Header */}
-        <div className="p-4 border-b border-gray-600 flex items-center gap-3 bg-gray-900 flex-shrink-0">
-          <div className="w-10 h-10 bg-cyan-300/20 rounded-full flex items-center justify-center">
-            <Shield className="w-5 h-5 text-cyan-300" />
+      {/* Chat Window - Changed card-glass to pixel-box */}
+      {isOpen && (
+        <div className="fixed bottom-24 right-6 w-full max-w-lg h-[700px] pixel-box flex flex-col z-50">
+          {/* Header - Updated styling */}
+          <div className="p-4 border-b border-gray-600 flex items-center gap-3 bg-gray-900 rounded-t-lg">
+            <div className="w-10 h-10 bg-cyan-300/20 rounded-full flex items-center justify-center">
+              <Shield className="w-5 h-5 text-cyan-300" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-white">FraudGuard AI Assistant</h3>
+              <p className="text-xs text-gray-400">Fraud Detection Expert</p>
+            </div>
           </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-white">FraudGuard AI Assistant</h3>
-            <p className="text-xs text-gray-400">Fraud Detection Expert</p>
-          </div>
-        </div>
 
-        {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900/90">
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900/90">
+            {messages.map((msg, idx) => (
               <div
-                className={`max-w-[75%] p-3 rounded-lg ${
-                  msg.role === "user"
-                    ? "bg-pink-500 text-white"
-                    : "bg-gray-700 text-white border border-gray-600"
-                } ${msg.content === "..." ? "animate-pulse" : ""}`}
+                key={idx}
+                // Ensures user messages align right
+                className={`flex ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
-                <p className="text-sm whitespace-pre-line">{msg.content}</p>
-              </div>
-            </div>
-          ))}
-
-          {/* Quick Actions (only show initially) */}
-          {messages.length === 1 && (
-            <div className="space-y-2">
-              <p className="text-xs text-gray-400 text-center mb-3">
-                Quick Actions:
-              </p>
-              {quickActions.map((action, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleSend(action.query)}
-                  className="w-full p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-left transition-colors border border-gray-600"
-                  disabled={loading}
+                {/* Message Bubble styling update */}
+                <div
+                  // FIX: Reduced max-w from [85%] to [75%] for more concise wrapping
+                  className={`max-w-[75%] p-3 rounded-lg ${
+                    msg.role === "user"
+                      ? "bg-pink-500 text-white"
+                      : "bg-gray-700 text-white border border-gray-600"
+                  } ${msg.content === "..." ? "animate-pulse" : ""}`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{action.icon}</span>
-                    <span className="text-sm text-cyan-300">{action.text}</span>
-                  </div>
-                </button>
-              ))}
+                  <p className="text-sm whitespace-pre-line">{msg.content}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Quick Actions (only show initially) */}
+            {messages.length === 1 && (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-400 text-center mb-3">
+                  Quick Actions:
+                </p>
+                {quickActions.map((action, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSend(action.query)}
+                    className="w-full p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-left transition-colors border border-gray-600"
+                    disabled={loading}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{action.icon}</span>
+                      <span className="text-sm text-cyan-300">
+                        {action.text}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Info Banner */}
+          <div className="px-4 py-2 bg-gray-800 border-t border-gray-600">
+            <div className="flex items-center gap-2 text-xs text-cyan-300">
+              <Lightbulb className="w-4 h-4" />
+              <span>Ask me anything about fraud prevention!</span>
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
+          </div>
 
-        {/* Info Banner */}
-        <div className="px-4 py-2 bg-gray-800 border-t border-gray-600 flex-shrink-0">
-          <div className="flex items-center gap-2 text-xs text-cyan-300">
-            <Lightbulb className="w-4 h-4" />
-            <span>Ask me anything about fraud prevention!</span>
+          {/* Input */}
+          <div className="p-4 border-t border-gray-600 bg-gray-900 rounded-b-lg">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                placeholder="Ask about fraud prevention..."
+                className="flex-1 bg-gray-700 border-gray-600 text-white"
+                disabled={loading}
+              />
+              <button
+                onClick={() => handleSend()}
+                className="btn-pixel-main w-10 h-10 flex items-center justify-center"
+                disabled={loading}
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-
-        {/* Input */}
-        <div className="p-4 border-t border-gray-600 bg-gray-900 flex-shrink-0">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask about fraud prevention..."
-              className="flex-1 bg-gray-700 border-gray-600 text-white"
-              disabled={loading}
-            />
-            <button
-              onClick={() => handleSend()}
-              className="btn-pixel-main w-10 h-10 flex items-center justify-center"
-              disabled={loading}
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
+      )}
     </>
   );
 };
